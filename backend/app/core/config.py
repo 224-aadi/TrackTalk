@@ -22,8 +22,6 @@ class Settings(BaseSettings):
 
     WHISPER_MODEL: str = "whisper-1"
 
-    SENTIMENT_MODEL: str = "distilbert-base-uncased-finetuned-sst-2-english"
-
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

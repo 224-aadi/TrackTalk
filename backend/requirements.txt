@@ -9,8 +9,6 @@ python-multipart
 celery[redis]
 redis
 openai
-transformers
-torch
 scikit-learn
 xgboost
 shap
