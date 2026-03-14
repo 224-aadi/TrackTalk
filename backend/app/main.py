@@ -36,6 +36,15 @@ app.include_router(training.router, prefix="/api/training", tags=["training"])
 app.include_router(insights.router, prefix="/api/insights", tags=["insights"])
 
 
+@app.get("/")
+def root():
+    return {
+        "app": settings.APP_NAME,
+        "docs": "/docs",
+        "health": "/api/health",
+    }
+
+
 @app.get("/api/health")
 def health_check():
     return {"status": "healthy", "app": settings.APP_NAME}
