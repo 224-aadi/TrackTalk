@@ -26,26 +26,36 @@ export function formatPercent(value: number | null): string {
 }
 
 export function sentimentColor(score: number | null): string {
-  if (score === null) return "text-gray-400";
-  if (score > 0.1) return "text-emerald-500";
-  if (score < -0.1) return "text-red-500";
-  return "text-amber-500";
+  if (score === null) return "text-n-400";
+  if (score > 0.1) return "text-success-500";
+  if (score < -0.1) return "text-danger-500";
+  return "text-warning-500";
 }
 
 export function sentimentBg(score: number | null): string {
-  if (score === null) return "bg-gray-100";
-  if (score > 0.1) return "bg-emerald-50";
-  if (score < -0.1) return "bg-red-50";
-  return "bg-amber-50";
+  if (score === null) return "bg-n-100";
+  if (score > 0.1) return "bg-success-50";
+  if (score < -0.1) return "bg-danger-50";
+  return "bg-warning-50";
 }
 
 export function outcomeColor(outcome: string): string {
   switch (outcome) {
     case "purchase":
-      return "text-emerald-600 bg-emerald-50";
+      return "text-success-700 bg-success-50";
     case "no_purchase":
-      return "text-red-600 bg-red-50";
+      return "text-danger-600 bg-danger-50";
     default:
-      return "text-gray-600 bg-gray-50";
+      return "text-n-500 bg-n-100";
   }
 }
+
+export const CHART_COLORS = [
+  "#2544EB",
+  "#FF5513",
+  "#0CA678",
+  "#F08C00",
+  "#7B93B2",
+  "#1D35D8",
+  "#E8390A",
+];

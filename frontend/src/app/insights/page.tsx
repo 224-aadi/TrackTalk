@@ -10,7 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-const API = "http://localhost:8000/api";
+import { BACKEND_ORIGIN } from "@/lib/api";
+const API = `${BACKEND_ORIGIN}/api`;
 
 interface ReportListItem {
   id: string;
@@ -84,8 +85,8 @@ export default function InsightsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Strategic Insights</h1>
-          <p className="mt-1 text-slate-500">AI-generated strategic analysis and recommendations</p>
+          <h1 className="text-2xl font-bold text-n-900">Strategic Insights</h1>
+          <p className="mt-1 text-n-500">AI-generated strategic analysis and recommendations</p>
         </div>
         <Button onClick={() => generateReport.mutate()} disabled={generateReport.isPending}>
           <FileText className="h-4 w-4" />
@@ -93,47 +94,45 @@ export default function InsightsPage() {
         </Button>
       </div>
 
-      {/* Quick stats */}
       {summary && (
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
-          <Card>
+          <Card className="border-l-4 border-l-brand-500">
             <CardContent className="p-4 text-center">
-              <p className="text-xs text-slate-500">Total Calls</p>
-              <p className="mt-1 text-2xl font-bold text-slate-900">{summary.total_calls}</p>
+              <p className="text-xs text-n-500">Total Calls</p>
+              <p className="mt-1 text-2xl font-bold text-n-900">{summary.total_calls}</p>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border-l-4 border-l-accent-500">
             <CardContent className="p-4 text-center">
-              <p className="text-xs text-slate-500">Avg Quality</p>
-              <p className="mt-1 text-2xl font-bold text-slate-900">{summary.avg_quality}/10</p>
+              <p className="text-xs text-n-500">Avg Quality</p>
+              <p className="mt-1 text-2xl font-bold text-n-900">{summary.avg_quality}/10</p>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border-l-4 border-l-success-500">
             <CardContent className="p-4 text-center">
-              <p className="text-xs text-slate-500">Avg Sentiment</p>
-              <p className={`mt-1 text-2xl font-bold ${summary.avg_sentiment >= 0 ? "text-emerald-600" : "text-red-600"}`}>
+              <p className="text-xs text-n-500">Avg Sentiment</p>
+              <p className={`mt-1 text-2xl font-bold ${summary.avg_sentiment >= 0 ? "text-success-600" : "text-danger-600"}`}>
                 {summary.avg_sentiment.toFixed(2)}
               </p>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border-l-4 border-l-warning-500">
             <CardContent className="p-4 text-center">
-              <p className="text-xs text-slate-500">Avg QA Score</p>
-              <p className="mt-1 text-2xl font-bold text-slate-900">
+              <p className="text-xs text-n-500">Avg QA Score</p>
+              <p className="mt-1 text-2xl font-bold text-n-900">
                 {summary.avg_qa_score ? `${Math.round(summary.avg_qa_score)}/100` : "N/A"}
               </p>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="border-l-4 border-l-brand-700">
             <CardContent className="p-4 text-center">
-              <p className="text-xs text-slate-500">Agents</p>
-              <p className="mt-1 text-2xl font-bold text-slate-900">{summary.agent_stats.length}</p>
+              <p className="text-xs text-n-500">Agents</p>
+              <p className="mt-1 text-2xl font-bold text-n-900">{summary.agent_stats.length}</p>
             </CardContent>
           </Card>
         </div>
       )}
 
-      {/* Report selector */}
       {reports && reports.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {reports.map((r) => (
@@ -149,14 +148,13 @@ export default function InsightsPage() {
         </div>
       )}
 
-      {/* Report content */}
       {activeReport ? (
         <Tabs defaultValue="summary">
           <TabsList>
             <TabsTrigger value="summary">Executive Summary</TabsTrigger>
             <TabsTrigger value="findings">Key Findings</TabsTrigger>
             <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
-            <TabsTrigger value="risks">Risks & Opportunities</TabsTrigger>
+            <TabsTrigger value="risks">Risks &amp; Opportunities</TabsTrigger>
           </TabsList>
 
           <TabsContent value="summary">
@@ -165,16 +163,16 @@ export default function InsightsPage() {
                 <CardTitle>Executive Summary</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-700 leading-relaxed">{activeReport.executive_summary}</p>
+                <p className="text-n-700 leading-relaxed">{activeReport.executive_summary}</p>
 
                 {activeReport.metrics_targets && Object.keys(activeReport.metrics_targets).length > 0 && (
                   <div className="mt-6">
-                    <h3 className="mb-3 text-sm font-semibold text-slate-700">Target Metrics</h3>
+                    <h3 className="mb-3 text-sm font-semibold text-n-700">Target Metrics</h3>
                     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
                       {Object.entries(activeReport.metrics_targets).map(([key, val]) => (
-                        <div key={key} className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-center">
-                          <p className="text-xs text-slate-500">{key.replace(/_/g, " ")}</p>
-                          <p className="mt-1 text-lg font-bold text-slate-900">
+                        <div key={key} className="rounded-lg border border-n-200 bg-n-50 p-3 text-center">
+                          <p className="text-xs text-n-500">{key.replace(/_/g, " ")}</p>
+                          <p className="mt-1 text-lg font-bold text-n-900">
                             {typeof val === "number" && val < 1 ? `${(val * 100).toFixed(0)}%` : val}
                           </p>
                         </div>
@@ -196,14 +194,14 @@ export default function InsightsPage() {
               <CardContent>
                 <div className="space-y-3">
                   {activeReport.key_findings?.map((f, i) => (
-                    <div key={i} className="rounded-lg border border-slate-200 p-4">
+                    <div key={i} className="rounded-lg border border-n-200 p-4">
                       <div className="flex items-start justify-between">
-                        <p className="text-sm font-medium text-slate-800">{f.finding}</p>
+                        <p className="text-sm font-medium text-n-800">{f.finding}</p>
                         <Badge variant={f.impact === "high" ? "destructive" : f.impact === "medium" ? "warning" : "secondary"}>
                           {f.impact} impact
                         </Badge>
                       </div>
-                      <p className="mt-2 text-xs text-slate-500">{f.evidence}</p>
+                      <p className="mt-2 text-xs text-n-500">{f.evidence}</p>
                     </div>
                   ))}
                 </div>
@@ -221,15 +219,15 @@ export default function InsightsPage() {
               <CardContent>
                 <div className="space-y-3">
                   {activeReport.recommendations?.map((r, i) => (
-                    <div key={i} className="rounded-lg border border-slate-200 p-4">
+                    <div key={i} className="rounded-lg border border-n-200 p-4">
                       <div className="flex items-start justify-between">
-                        <p className="text-sm font-medium text-slate-800">{r.recommendation}</p>
+                        <p className="text-sm font-medium text-n-800">{r.recommendation}</p>
                         <Badge variant={r.priority === "high" ? "destructive" : r.priority === "medium" ? "warning" : "secondary"}>
                           {r.priority}
                         </Badge>
                       </div>
-                      <p className="mt-2 text-xs text-emerald-700">Expected impact: {r.expected_impact}</p>
-                      <p className="mt-1 text-xs text-slate-500">How: {r.implementation}</p>
+                      <p className="mt-2 text-xs text-success-700">Expected impact: {r.expected_impact}</p>
+                      <p className="mt-1 text-xs text-n-500">How: {r.implementation}</p>
                     </div>
                   ))}
                 </div>
@@ -241,19 +239,19 @@ export default function InsightsPage() {
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-red-700">
+                  <CardTitle className="flex items-center gap-2 text-danger-700">
                     <AlertTriangle className="h-5 w-5" /> Risk Areas
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {activeReport.risk_areas?.map((r, i) => (
-                      <div key={i} className="rounded-lg border border-red-100 bg-red-50 p-3">
+                      <div key={i} className="rounded-lg border border-danger-100 bg-danger-50 p-3">
                         <div className="flex items-center justify-between">
-                          <p className="text-sm font-medium text-red-800">{r.risk}</p>
+                          <p className="text-sm font-medium text-danger-800">{r.risk}</p>
                           <Badge variant="destructive">{r.severity}</Badge>
                         </div>
-                        <p className="mt-2 text-xs text-red-700">Mitigation: {r.mitigation}</p>
+                        <p className="mt-2 text-xs text-danger-700">Mitigation: {r.mitigation}</p>
                       </div>
                     ))}
                   </div>
@@ -262,17 +260,17 @@ export default function InsightsPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-emerald-700">
+                  <CardTitle className="flex items-center gap-2 text-success-700">
                     <Target className="h-5 w-5" /> Opportunities
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {activeReport.opportunities?.map((o, i) => (
-                      <div key={i} className="rounded-lg border border-emerald-100 bg-emerald-50 p-3">
-                        <p className="text-sm font-medium text-emerald-800">{o.opportunity}</p>
-                        <p className="mt-1 text-xs text-emerald-700">Potential: {o.potential}</p>
-                        <p className="mt-1 text-xs text-slate-600">Action: {o.action_needed}</p>
+                      <div key={i} className="rounded-lg border border-success-100 bg-success-50 p-3">
+                        <p className="text-sm font-medium text-success-800">{o.opportunity}</p>
+                        <p className="mt-1 text-xs text-success-700">Potential: {o.potential}</p>
+                        <p className="mt-1 text-xs text-n-600">Action: {o.action_needed}</p>
                       </div>
                     ))}
                   </div>
@@ -284,9 +282,9 @@ export default function InsightsPage() {
       ) : (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
-            <TrendingUp className="h-12 w-12 text-slate-300" />
-            <p className="mt-4 text-lg font-medium text-slate-500">No reports generated yet</p>
-            <p className="text-sm text-slate-400">
+            <TrendingUp className="h-12 w-12 text-n-300" />
+            <p className="mt-4 text-lg font-medium text-n-500">No reports generated yet</p>
+            <p className="text-sm text-n-400">
               Click &ldquo;Generate Report&rdquo; for an AI-powered strategic analysis
             </p>
           </CardContent>

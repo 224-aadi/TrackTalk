@@ -48,11 +48,11 @@ export default function CallsPage() {
   const totalPages = data ? Math.ceil(data.total / data.page_size) : 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Call Explorer</h1>
-          <p className="mt-1 text-slate-500">Browse, upload, and analyze call recordings</p>
+          <h1 className="text-2xl font-bold text-n-900">Call Explorer</h1>
+          <p className="mt-1 text-n-500">Browse, upload, and analyze call recordings</p>
         </div>
         <div>
           <input
@@ -77,7 +77,7 @@ export default function CallsPage() {
         <select
           value={outcomeFilter}
           onChange={(e) => { setOutcomeFilter(e.target.value); setPage(1); }}
-          className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
+          className="rounded-lg border-n-200 bg-white px-3 py-2 text-sm text-n-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none"
         >
           <option value="">All Outcomes</option>
           <option value="purchase">Purchase</option>
@@ -87,7 +87,7 @@ export default function CallsPage() {
         <select
           value={statusFilter}
           onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-          className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700"
+          className="rounded-lg border-n-200 bg-white px-3 py-2 text-sm text-n-700 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none"
         >
           <option value="">All Statuses</option>
           <option value="uploaded">Uploaded</option>
@@ -100,49 +100,49 @@ export default function CallsPage() {
 
       {isLoading ? (
         <div className="flex h-64 items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900" />
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-n-200 border-t-brand-600" />
         </div>
       ) : (
         <>
-          <div className="space-y-2">
-            {data?.calls.map((call) => (
-              <Link key={call.id} href={`/calls/${call.id}`}>
-                <Card className="cursor-pointer transition-shadow hover:shadow-md">
-                  <CardContent className="flex items-center gap-4 p-4">
-                    <div className="rounded-lg bg-slate-100 p-2">
-                      <Phone className="h-5 w-5 text-slate-600" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="truncate font-medium text-slate-900">{call.original_filename}</p>
-                      <p className="text-sm text-slate-500">
-                        {formatDate(call.created_at)} &middot; {formatDuration(call.duration_seconds)}
-                      </p>
-                    </div>
-                    <Badge variant={call.status === "analyzed" ? "success" : "secondary"}>
-                      {call.status}
-                    </Badge>
-                    <Badge className={outcomeColor(call.outcome)}>
-                      {call.outcome.replace("_", " ")}
-                    </Badge>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-
-            {data?.calls.length === 0 && (
-              <Card>
-                <CardContent className="flex flex-col items-center justify-center py-16">
-                  <FileText className="h-12 w-12 text-slate-300" />
-                  <p className="mt-4 text-lg font-medium text-slate-500">No calls found</p>
-                  <p className="text-sm text-slate-400">Upload audio files to get started</p>
-                </CardContent>
-              </Card>
-            )}
-          </div>
+          {data?.calls.length === 0 ? (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center py-16">
+                <FileText className="h-12 w-12 text-n-300" />
+                <p className="mt-4 text-lg font-medium text-n-500">No calls found</p>
+                <p className="mt-1 text-sm text-n-400">Upload audio files to get started</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardContent className="p-0">
+                <div className="divide-y divide-n-100">
+                  {data?.calls.map((call) => (
+                    <Link key={call.id} href={`/calls/${call.id}`} className="block">
+                      <div className="flex items-center gap-4 px-5 py-4 transition-colors hover:bg-n-50">
+                        <Phone className="h-4 w-4 flex-shrink-0 text-n-400" />
+                        <div className="flex-1 min-w-0">
+                          <p className="truncate text-sm font-medium text-n-900">{call.original_filename}</p>
+                          <p className="text-xs text-n-500">
+                            {formatDate(call.created_at)} &middot; {formatDuration(call.duration_seconds)}
+                          </p>
+                        </div>
+                        <Badge variant={call.status === "analyzed" ? "success" : "secondary"}>
+                          {call.status}
+                        </Badge>
+                        <Badge className={outcomeColor(call.outcome)}>
+                          {call.outcome.replace("_", " ")}
+                        </Badge>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between">
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-n-500">
                 Showing {((page - 1) * (data?.page_size || 15)) + 1}–
                 {Math.min(page * (data?.page_size || 15), data?.total || 0)} of {data?.total} calls
               </p>

@@ -56,8 +56,8 @@ export default function PredictionsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Predictions</h1>
-          <p className="mt-1 text-slate-500">Train models and predict call outcomes</p>
+          <h1 className="text-2xl font-bold text-n-900">Predictions</h1>
+          <p className="mt-1 text-n-500">Train models and predict call outcomes</p>
         </div>
         <div className="flex gap-3">
           <Button
@@ -79,61 +79,61 @@ export default function PredictionsPage() {
       </div>
 
       {trainMutation.isError && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <div className="rounded-lg border border-danger-100 bg-danger-50 p-4 text-sm text-danger-600">
           {(trainMutation.error as Error).message}
         </div>
       )}
 
       {trainMutation.isSuccess && (
-        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
+        <div className="rounded-lg border border-success-100 bg-success-50 p-4 text-sm text-success-700">
           Model trained successfully! Version: {trainMutation.data.model_version} |
           F1: {trainMutation.data.f1.toFixed(3)} | AUC: {trainMutation.data.auc.toFixed(3)}
         </div>
       )}
 
       {batchMutation.isSuccess && (
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-700">
-          Batch prediction complete: {batchMutation.data.predicted} predicted,
+        <div className="rounded-lg border border-brand-100 bg-brand-50 p-4 text-sm text-brand-700">
+          Batch prediction complete: {batchMutation.data.predicted} predicted,{" "}
           {batchMutation.data.errors} errors
         </div>
       )}
 
       {isLoading ? (
         <div className="flex h-64 items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900" />
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-n-200 border-t-brand-600" />
         </div>
       ) : !models || models.length === 0 ? (
         <Card>
           <CardContent className="py-12">
             <div className="mx-auto max-w-md text-center">
-              <BrainCircuit className="mx-auto h-16 w-16 text-slate-300" />
-              <h2 className="mt-4 text-xl font-semibold text-slate-800">No Model Trained Yet</h2>
-              <p className="mt-2 text-sm text-slate-500">
+              <BrainCircuit className="mx-auto h-16 w-16 text-n-300" />
+              <h2 className="mt-4 text-xl font-semibold text-n-500">No Model Trained Yet</h2>
+              <p className="mt-2 text-sm text-n-400">
                 To train a predictive model, you need:
               </p>
               <div className="mt-4 space-y-2 text-left">
-                <div className="flex items-start gap-3 rounded-lg border border-slate-200 p-3">
-                  <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-slate-300" />
+                <div className="flex items-start gap-3 rounded-lg border border-n-100 p-3">
+                  <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-n-300" />
                   <div>
-                    <p className="text-sm font-medium text-slate-700">At least 10 labeled calls</p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-sm font-medium text-n-700">At least 10 labeled calls</p>
+                    <p className="text-xs text-n-400">
                       Each call needs an outcome: &ldquo;purchase&rdquo; or &ldquo;no_purchase&rdquo;.
                       GPT auto-labels new uploads, or set them manually on the call detail page.
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 rounded-lg border border-slate-200 p-3">
-                  <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-slate-300" />
+                <div className="flex items-start gap-3 rounded-lg border border-n-100 p-3">
+                  <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-n-300" />
                   <div>
-                    <p className="text-sm font-medium text-slate-700">Both outcome classes</p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-sm font-medium text-n-700">Both outcome classes</p>
+                    <p className="text-xs text-n-400">
                       Need examples of both successful sales and unsuccessful calls
                       so the model can learn the difference.
                     </p>
                   </div>
                 </div>
               </div>
-              <p className="mt-6 text-xs text-slate-400">
+              <p className="mt-6 text-xs text-n-400">
                 Once you have enough labeled data, click &ldquo;Train New Model&rdquo; above.
               </p>
             </div>
@@ -151,16 +151,16 @@ export default function PredictionsPage() {
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
                   {[
-                    { label: "Accuracy", value: metrics.accuracy },
-                    { label: "Precision", value: metrics.precision },
-                    { label: "Recall", value: metrics.recall },
-                    { label: "F1 Score", value: metrics.f1 },
-                    { label: "AUC", value: metrics.auc },
+                    { label: "Accuracy", value: metrics.accuracy, border: "border-l-brand-600" },
+                    { label: "Precision", value: metrics.precision, border: "border-l-accent-500" },
+                    { label: "Recall", value: metrics.recall, border: "border-l-success-500" },
+                    { label: "F1 Score", value: metrics.f1, border: "border-l-warning-500" },
+                    { label: "AUC", value: metrics.auc, border: "border-l-n-600" },
                   ].map((m) => (
-                    <Card key={m.label}>
+                    <Card key={m.label} className={`border-l-4 ${m.border}`}>
                       <CardContent className="p-4 text-center">
-                        <p className="text-sm text-slate-500">{m.label}</p>
-                        <p className="mt-1 text-2xl font-bold text-slate-900">
+                        <p className="text-sm text-n-500">{m.label}</p>
+                        <p className="mt-1 text-2xl font-bold text-n-900">
                           {(m.value * 100).toFixed(1)}%
                         </p>
                       </CardContent>
@@ -182,7 +182,7 @@ export default function PredictionsPage() {
                               tpr: metrics.roc_curve.tpr[i],
                             }))}
                           >
-                            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                            <CartesianGrid strokeDasharray="3 3" stroke="#E3EAF2" />
                             <XAxis
                               dataKey="fpr"
                               label={{ value: "False Positive Rate", position: "bottom" }}
@@ -193,19 +193,25 @@ export default function PredictionsPage() {
                               label={{ value: "True Positive Rate", angle: -90, position: "insideLeft" }}
                               tick={{ fontSize: 11 }}
                             />
-                            <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid #e2e8f0" }} />
-                            <Line type="monotone" dataKey="tpr" stroke="#0f172a" strokeWidth={2} dot={false} />
+                            <Tooltip
+                              contentStyle={{
+                                borderRadius: "8px",
+                                border: "1px solid #E3EAF2",
+                                boxShadow: "0 4px 12px rgba(11,17,32,0.08)",
+                              }}
+                            />
+                            <Line type="monotone" dataKey="tpr" stroke="#2544EB" strokeWidth={2} dot={false} />
                             <Line
                               type="linear"
                               dataKey="fpr"
-                              stroke="#94a3b8"
+                              stroke="#C7D4E2"
                               strokeDasharray="5 5"
                               dot={false}
                             />
                           </LineChart>
                         </ResponsiveContainer>
                       ) : (
-                        <p className="py-8 text-center text-slate-400">No ROC data</p>
+                        <p className="py-8 text-center text-n-400">No ROC data</p>
                       )}
                     </CardContent>
                   </Card>
@@ -220,33 +226,33 @@ export default function PredictionsPage() {
                           <thead>
                             <tr>
                               <th className="p-3"></th>
-                              <th className="p-3 text-sm font-medium text-slate-500">Predicted No</th>
-                              <th className="p-3 text-sm font-medium text-slate-500">Predicted Yes</th>
+                              <th className="p-3 text-sm font-medium text-n-500">Predicted No</th>
+                              <th className="p-3 text-sm font-medium text-n-500">Predicted Yes</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
-                              <td className="p-3 text-sm font-medium text-slate-500">Actual No</td>
+                              <td className="p-3 text-sm font-medium text-n-500">Actual No</td>
                               <td className="p-3">
-                                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-lg bg-emerald-100 text-xl font-bold text-emerald-800">
+                                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-lg bg-success-100 text-xl font-bold text-success-700">
                                   {metrics.confusion_matrix[0]?.[0] ?? 0}
                                 </div>
                               </td>
                               <td className="p-3">
-                                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-lg bg-red-100 text-xl font-bold text-red-800">
+                                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-lg bg-danger-100 text-xl font-bold text-danger-700">
                                   {metrics.confusion_matrix[0]?.[1] ?? 0}
                                 </div>
                               </td>
                             </tr>
                             <tr>
-                              <td className="p-3 text-sm font-medium text-slate-500">Actual Yes</td>
+                              <td className="p-3 text-sm font-medium text-n-500">Actual Yes</td>
                               <td className="p-3">
-                                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-lg bg-red-100 text-xl font-bold text-red-800">
+                                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-lg bg-danger-100 text-xl font-bold text-danger-700">
                                   {metrics.confusion_matrix[1]?.[0] ?? 0}
                                 </div>
                               </td>
                               <td className="p-3">
-                                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-lg bg-emerald-100 text-xl font-bold text-emerald-800">
+                                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-lg bg-success-100 text-xl font-bold text-success-700">
                                   {metrics.confusion_matrix[1]?.[1] ?? 0}
                                 </div>
                               </td>
@@ -273,15 +279,21 @@ export default function PredictionsPage() {
                           layout="vertical"
                           margin={{ left: 140 }}
                         >
-                          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                          <CartesianGrid strokeDasharray="3 3" stroke="#E3EAF2" />
                           <XAxis type="number" tick={{ fontSize: 12 }} />
                           <YAxis type="category" dataKey="name" tick={{ fontSize: 12 }} width={130} />
-                          <Tooltip contentStyle={{ borderRadius: "8px", border: "1px solid #e2e8f0" }} />
-                          <Bar dataKey="importance" fill="#0f172a" radius={[0, 4, 4, 0]} />
+                          <Tooltip
+                            contentStyle={{
+                              borderRadius: "8px",
+                              border: "1px solid #E3EAF2",
+                              boxShadow: "0 4px 12px rgba(11,17,32,0.08)",
+                            }}
+                          />
+                          <Bar dataKey="importance" fill="#2544EB" radius={[0, 4, 4, 0]} />
                         </BarChart>
                       </ResponsiveContainer>
                     ) : (
-                      <p className="py-8 text-center text-slate-400">No feature importance data</p>
+                      <p className="py-8 text-center text-n-400">No feature importance data</p>
                     )}
                   </CardContent>
                 </Card>
@@ -289,9 +301,9 @@ export default function PredictionsPage() {
             ) : (
               <Card>
                 <CardContent className="flex flex-col items-center justify-center py-16">
-                  <BrainCircuit className="h-12 w-12 text-slate-300" />
-                  <p className="mt-4 text-lg font-medium text-slate-500">No model trained yet</p>
-                  <p className="text-sm text-slate-400">
+                  <BrainCircuit className="h-12 w-12 text-n-300" />
+                  <p className="mt-4 text-lg font-medium text-n-500">No model trained yet</p>
+                  <p className="text-sm text-n-400">
                     Label calls as purchase/no_purchase, then click &ldquo;Train New Model&rdquo;
                   </p>
                 </CardContent>
@@ -310,20 +322,20 @@ export default function PredictionsPage() {
                     {models.map((model) => (
                       <div
                         key={model.id}
-                        className="flex items-center justify-between rounded-lg border border-slate-200 p-4"
+                        className="flex items-center justify-between rounded-lg border border-n-100 p-4 transition-colors hover:bg-n-50"
                       >
                         <div>
-                          <p className="font-medium text-slate-900">{model.version}</p>
-                          <p className="text-sm text-slate-500">
+                          <p className="font-medium text-n-900">{model.version}</p>
+                          <p className="text-sm text-n-500">
                             {new Date(model.created_at).toLocaleString()} &middot;{" "}
                             {model.training_samples} samples
                           </p>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="text-sm text-slate-600">
+                          <span className="text-sm text-n-600">
                             F1: {((model.f1_score || 0) * 100).toFixed(1)}%
                           </span>
-                          <span className="text-sm text-slate-600">
+                          <span className="text-sm text-n-600">
                             AUC: {((model.auc_score || 0) * 100).toFixed(1)}%
                           </span>
                           {model.is_active ? (
@@ -348,7 +360,7 @@ export default function PredictionsPage() {
                     ))}
                   </div>
                 ) : (
-                  <p className="py-8 text-center text-slate-400">No models trained yet</p>
+                  <p className="py-8 text-center text-n-400">No models trained yet</p>
                 )}
               </CardContent>
             </Card>

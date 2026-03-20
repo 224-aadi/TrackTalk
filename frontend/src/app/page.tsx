@@ -24,14 +24,14 @@ export default function DashboardPage() {
   if (isLoading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-n-200 border-t-brand-600" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-red-700">
+      <div className="rounded-lg border border-danger-100 bg-danger-50 p-6 text-danger-600">
         <p className="font-medium">Failed to load dashboard</p>
         <p className="mt-1 text-sm">{(error as Error).message}</p>
       </div>
@@ -45,47 +45,49 @@ export default function DashboardPage() {
       title: "Total Calls",
       value: metrics.total_calls,
       icon: Phone,
-      color: "text-blue-600 bg-blue-50",
+      border: "border-l-brand-500",
+      iconColor: "text-brand-600",
     },
     {
       title: "Transcribed",
       value: metrics.total_transcribed,
       icon: FileText,
-      color: "text-purple-600 bg-purple-50",
+      border: "border-l-accent-500",
+      iconColor: "text-accent-500",
     },
     {
       title: "Analyzed",
       value: metrics.total_analyzed,
       icon: BarChart3,
-      color: "text-emerald-600 bg-emerald-50",
+      border: "border-l-success-500",
+      iconColor: "text-success-500",
     },
     {
       title: "Conversion Rate",
       value: formatPercent(metrics.conversion_rate),
       icon: TrendingUp,
-      color: "text-amber-600 bg-amber-50",
+      border: "border-l-warning-500",
+      iconColor: "text-warning-500",
     },
   ];
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Dashboard</h1>
-        <p className="mt-1 text-slate-500">Overview of your call center analytics</p>
+        <h1 className="text-2xl font-bold text-n-900">Dashboard</h1>
+        <p className="mt-1 text-n-500">Overview of your call center analytics</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map((stat) => (
-          <Card key={stat.title}>
-            <CardContent className="p-6">
+          <Card key={stat.title} className={`${stat.border} border-l-4`}>
+            <CardContent className="p-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-500">{stat.title}</p>
-                  <p className="mt-1 text-2xl font-bold text-slate-900">{stat.value}</p>
+                  <p className="text-sm text-n-500">{stat.title}</p>
+                  <p className="mt-1 text-2xl font-bold text-n-900">{stat.value}</p>
                 </div>
-                <div className={`rounded-lg p-3 ${stat.color}`}>
-                  <stat.icon className="h-5 w-5" />
-                </div>
+                <stat.icon className={`h-5 w-5 ${stat.iconColor}`} />
               </div>
             </CardContent>
           </Card>

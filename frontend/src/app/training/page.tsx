@@ -7,7 +7,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-const API = "http://localhost:8000/api";
+import { BACKEND_ORIGIN } from "@/lib/api";
+const API = `${BACKEND_ORIGIN}/api`;
 
 function plural(count: number, singular: string, pluralForm?: string) {
   return count === 1 ? `${count} ${singular}` : `${count} ${pluralForm || singular + "s"}`;
@@ -66,22 +67,22 @@ export default function TrainingPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Training Portal</h1>
-        <p className="mt-1 text-slate-500">
+        <h1 className="text-2xl font-bold text-n-900">Training Portal</h1>
+        <p className="mt-1 text-n-500">
           Personalized training recommendations for each agent
         </p>
       </div>
 
       {isLoading ? (
         <div className="flex h-64 items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900" />
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-n-200 border-t-brand-600" />
         </div>
       ) : !agents || agents.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
-            <GraduationCap className="h-12 w-12 text-slate-300" />
-            <p className="mt-4 text-lg font-medium text-slate-500">No agents to train</p>
-            <p className="text-sm text-slate-400">Upload and process calls first</p>
+            <GraduationCap className="h-12 w-12 text-n-300" />
+            <p className="mt-4 text-lg font-medium text-n-500">No agents to train</p>
+            <p className="text-sm text-n-400">Upload and process calls first</p>
           </CardContent>
         </Card>
       ) : (
@@ -93,20 +94,20 @@ export default function TrainingPage() {
             return (
               <Card key={agent.id} className="overflow-hidden">
                 <div
-                  className="flex cursor-pointer items-center justify-between p-5 transition-colors hover:bg-slate-50"
+                  className="flex cursor-pointer items-center justify-between p-5 transition-colors hover:bg-n-50"
                   onClick={() => setExpanded(isExpanded ? null : agent.id)}
                 >
                   <div className="flex items-center gap-4">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-900 text-base font-bold text-white">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-600 text-base font-bold text-white">
                       {agent.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="font-semibold text-slate-900">{agent.name}</p>
-                      <p className="text-sm text-slate-500">
+                      <p className="font-semibold text-n-900">{agent.name}</p>
+                      <p className="text-sm text-n-500">
                         {agent.team || "Unknown company"}
-                        <span className="mx-1.5 text-slate-300">&middot;</span>
+                        <span className="mx-1.5 text-n-300">&middot;</span>
                         {plural(agent.call_count, "call")}
-                        <span className="mx-1.5 text-slate-300">&middot;</span>
+                        <span className="mx-1.5 text-n-300">&middot;</span>
                         {plural(agent.coaching_sessions, "coaching session")}
                       </p>
                     </div>
@@ -128,65 +129,62 @@ export default function TrainingPage() {
                       </Button>
                     )}
                     {isExpanded
-                      ? <ChevronUp className="h-5 w-5 text-slate-400" />
-                      : <ChevronDown className="h-5 w-5 text-slate-400" />}
+                      ? <ChevronUp className="h-5 w-5 text-n-400" />
+                      : <ChevronDown className="h-5 w-5 text-n-400" />}
                   </div>
                 </div>
 
                 {isExpanded && (
-                  <div className="border-t border-slate-100 bg-slate-50 p-6">
+                  <div className="border-t border-n-100 bg-n-50 p-6">
                     {!recs?.recommendations ? (
-                      <div className="py-8 text-center text-slate-400">
-                        <GraduationCap className="mx-auto h-8 w-8 text-slate-300" />
+                      <div className="py-8 text-center text-n-400">
+                        <GraduationCap className="mx-auto h-8 w-8 text-n-300" />
                         <p className="mt-2 text-sm">No training plan yet. Click &ldquo;Generate Plan&rdquo; to create one.</p>
                       </div>
                     ) : (
                       <div className="space-y-6">
-                        {/* Assessment */}
-                        <div className="rounded-lg border border-slate-200 bg-white p-4">
-                          <p className="text-sm text-slate-700 leading-relaxed">{recs.recommendations.overall_assessment}</p>
+                        <div className="rounded-lg border border-n-200 bg-white p-4">
+                          <p className="text-sm text-n-700 leading-relaxed">{recs.recommendations.overall_assessment}</p>
                         </div>
 
-                        {/* Skill gaps */}
                         {recs.recommendations.skill_gaps?.length > 0 && (
                           <div>
-                            <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-red-700">
+                            <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-danger-600">
                               <Target className="h-4 w-4" /> Skill Gaps
                             </h3>
                             <div className="space-y-2">
                               {recs.recommendations.skill_gaps.map((gap, i) => (
-                                <div key={i} className="rounded-lg border bg-white p-3">
+                                <div key={i} className="rounded-lg border border-n-200 bg-white p-3">
                                   <div className="flex items-center justify-between">
-                                    <p className="text-sm font-medium text-slate-800">{gap.skill}</p>
+                                    <p className="text-sm font-medium text-n-800">{gap.skill}</p>
                                     <Badge variant={gap.priority === "high" ? "destructive" : gap.priority === "medium" ? "warning" : "secondary"}>
                                       {gap.priority}
                                     </Badge>
                                   </div>
-                                  <p className="mt-1 text-xs text-slate-500">{gap.evidence}</p>
+                                  <p className="mt-1 text-xs text-n-500">{gap.evidence}</p>
                                 </div>
                               ))}
                             </div>
                           </div>
                         )}
 
-                        {/* Training plan */}
                         {recs.recommendations.training_plan?.length > 0 && (
                           <div>
-                            <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-blue-700">
+                            <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-brand-700">
                               <GraduationCap className="h-4 w-4" /> Training Plan
                             </h3>
                             <div className="space-y-2">
                               {recs.recommendations.training_plan.map((step, i) => (
-                                <div key={i} className="flex gap-3 rounded-lg border bg-white p-3">
-                                  <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700">
+                                <div key={i} className="flex gap-3 rounded-lg border border-n-200 bg-white p-3">
+                                  <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-700">
                                     {i + 1}
                                   </div>
                                   <div>
                                     <div className="flex items-center gap-2">
-                                      <p className="text-sm font-medium text-slate-800">{step.title}</p>
-                                      <span className="text-xs text-slate-400">{step.duration_estimate}</span>
+                                      <p className="text-sm font-medium text-n-800">{step.title}</p>
+                                      <span className="text-xs text-n-400">{step.duration_estimate}</span>
                                     </div>
-                                    <p className="mt-1 text-xs text-slate-500">{step.description}</p>
+                                    <p className="mt-1 text-xs text-n-500">{step.description}</p>
                                   </div>
                                 </div>
                               ))}
@@ -194,16 +192,15 @@ export default function TrainingPage() {
                           </div>
                         )}
 
-                        {/* Practice scenarios */}
                         {recs.recommendations.practice_scenarios?.length > 0 && (
                           <div>
-                            <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-purple-700">
+                            <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-accent-700">
                               <Brain className="h-4 w-4" /> Practice Scenarios
                             </h3>
                             <div className="space-y-2">
                               {recs.recommendations.practice_scenarios.map((sc, i) => (
-                                <div key={i} className="rounded-lg border border-purple-100 bg-white p-3">
-                                  <p className="text-sm font-medium text-slate-800">{sc.scenario}</p>
+                                <div key={i} className="rounded-lg border border-accent-100 bg-white p-3">
+                                  <p className="text-sm font-medium text-n-800">{sc.scenario}</p>
                                   <div className="mt-2 flex gap-2">
                                     <Badge variant="secondary">Customer: {sc.customer_type}</Badge>
                                     <Badge variant="secondary">Goal: {sc.objective}</Badge>
@@ -214,14 +211,13 @@ export default function TrainingPage() {
                           </div>
                         )}
 
-                        {/* Strengths */}
                         {recs.recommendations.strengths_to_leverage?.length > 0 && (
                           <div>
-                            <h3 className="mb-3 text-sm font-semibold text-emerald-700">Strengths to Build On</h3>
+                            <h3 className="mb-3 text-sm font-semibold text-success-700">Strengths to Build On</h3>
                             <ul className="space-y-1">
                               {recs.recommendations.strengths_to_leverage.map((s, i) => (
-                                <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
-                                  <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-emerald-400" />
+                                <li key={i} className="flex items-start gap-2 text-sm text-n-600">
+                                  <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-success-500" />
                                   {typeof s === "string" ? s : (s as { strength?: string }).strength || JSON.stringify(s)}
                                 </li>
                               ))}
